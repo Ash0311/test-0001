@@ -26,7 +26,7 @@ jobs:
         uses: peter-evans/create-or-update-issue@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          owner: @Ash0311
+          owner: Ash0311
           repo: Test001
           title: "Branch Cleanup"
           body: |
