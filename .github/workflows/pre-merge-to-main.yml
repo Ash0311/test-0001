@@ -16,4 +16,4 @@ jobs:
         run: |
           CURRENT_DATE=$(date +'%d%b%Y_%H%M')
           git checkout -b main-pre-merge/$CURRENT_DATE
-          git push -u origin pre-merge/$CURRENT_DATE
+          git push -u origin  main-pre-merge/$CURRENT_DATE
