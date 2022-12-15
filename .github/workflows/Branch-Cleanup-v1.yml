@@ -23,10 +23,10 @@ jobs:
           done
       # Send a notification to @Ash0311 with a link to delete each branch in question
       - name: Send notification
-        uses: peter-evans/create-or-update-issue@v1
+        uses: peter-evans/create-or-update-issue@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          owner: Ash0311
+          owner: @Ash0311
           repo: Test001
           title: "Branch Cleanup"
           body: |
