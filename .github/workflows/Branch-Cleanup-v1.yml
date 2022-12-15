@@ -10,19 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository containing the branches
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.1
       # Get a list of all branches in the repository
       - run: git branch --all
           # Filter the list of branches to only include those that are older than 10 days
-          - run: |
-              git for-each-ref --format="%(refname)" refs/heads/ | while read branch; do
-                date=$(git log -1 --format=%cd $branch)
-                date_in_seconds=$(date -d "$date" +%s)
-                ten_days_ago_in_seconds=$(date -d "-10 days" +%s)
-                if [ "$date_in_seconds" -lt "$ten_days_ago_in_seconds" ]; then
-                  echo "$branch is older than 10 days"
-                fi
-              done
+      - run: |
+          git for-each-ref --format="%(refname)" refs/heads/ | while read branch; do
+            date=$(git log -1 --format=%cd $branch)
+            date_in_seconds=$(date -d "$date" +%s)
+            ten_days_ago_in_seconds=$(date -d "-10 days" +%s)
+            if [ "$date_in_seconds" -lt "$ten_days_ago_in_seconds" ]; then
+              echo "$branch is older than 10 days"
+            fi
+          done
       # Send a notification to @asho311 with a link to delete each branch in question
       - name: Send notification
         uses: peter-evans/create-or-update-issue@v1
