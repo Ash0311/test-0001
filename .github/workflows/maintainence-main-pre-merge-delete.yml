@@ -1,4 +1,8 @@
-This will delete 
+# This will delete old main-pre-release branches that are over 200 days old.
+# To delete instead of list out the branch remove the -n from the end of the last line 
+# from : git branch -d -n $1; fi
+# to: git branch -d $1; fi
+# WARNING: once you remove the flag, this is permenent. 
 
 name: Delete old main-pre-merge branches
 
@@ -8,5 +12,5 @@ jobs:
   delete-old-main-pre-merge-branches:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.1
     - run: git branch -d --list "main-pre-merge/*" | xargs -I {} bash -c 'set -- {} ; if [[ $(($(date +%s) - $(date +%s -d ${1#*/}))) -gt 200*24*60*60 ]]; then git branch -d -n $1; fi'
