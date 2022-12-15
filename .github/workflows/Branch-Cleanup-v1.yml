@@ -1,10 +1,10 @@
 name: Branch Cleanup
 
-on:
-  schedule:
-    # Run this action daily at 12:00 PM
-    - cron: '0 12 * * *'
-
+#on:
+#  schedule:
+#    # Run this action daily at 12:00 PM
+#    - cron: '0 12 * * *'
+on: [push]
 jobs:
   cleanup:
     runs-on: ubuntu-latest
