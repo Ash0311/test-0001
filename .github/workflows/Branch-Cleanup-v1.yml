@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository containing the branches
-      - uses: actions/checkout@v2.3.1
+      - uses: actions/checkout@v2
       # Get a list of all branches in the repository
       - run: git branch --all
           # Filter the list of branches to only include those that are older than 10 days
