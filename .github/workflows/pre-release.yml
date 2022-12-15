@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [ opened ]
     branches:
-      - develop
+      - main
 
 jobs:
   create_pre_release_branch:
