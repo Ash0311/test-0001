@@ -1,7 +1,7 @@
 name: Pre-release
 on:
   pull_request:
-    types: [closed]
+    types: [ opened ]
     branches:
       - develop
 
@@ -9,21 +9,20 @@ jobs:
   create_pre_release_branch:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-    - name: Create pre-release branch
-      run: |
-        CURRENT_DATE=$(date +'%Y-%m-%d')
-        git checkout -b pre-release/$CURRENT_DATE
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Create pre-release branch
+        run: |
+          CURRENT_DATE=$(date +'%d%b%Y_%H%M')
+          git checkout -b pre-release/$CURRENT_DATE
 
   merge_develop_into_master:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
-    - name: Merge develop into master
-      run: |
-        git merge develop
-      
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Merge develop into master
+        run: |
+          git merge develop
