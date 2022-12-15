@@ -1,0 +1,12 @@
+This will delete 
+
+name: Delete old main-pre-merge branches
+
+on: [push]
+
+jobs:
+  delete-old-main-pre-merge-branches:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: git branch -d --list "main-pre-merge/*" | xargs -I {} bash -c 'set -- {} ; if [[ $(($(date +%s) - $(date +%s -d ${1#*/}))) -gt 200*24*60*60 ]]; then git branch -d -n $1; fi'
