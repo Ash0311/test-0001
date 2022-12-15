@@ -1,0 +1,16 @@
+name: Notify to delete old main-pre-merge branches
+
+on: [push]
+
+jobs:
+  notice-to-delete-old-main-pre-merge-branches:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.3.1
+    - run: git branch -d --list "main-pre-merge/*" | xargs -I {} bash -c 'set -- {} ; if [[ $(($(date +%s) - $(date +%s -d ${1#*/}))) -gt 200*24*60*60 ]]; then git branch -d -n $1; fi'
+    - name: Send notification to @ash0311
+      run: |
+        branches=$(git branch -d --list "main-pre-merge/*" | xargs -I {} bash -c 'set -- {} ; if [[ $(($(date +%s) - $(date +%s -d ${1#*/}))) -gt 200*24*60*60 ]]; then echo $1; fi')
+        for branch in $branches; do
+          echo "The branch $branch is older than 200 days and marked for deletion. To delete it, click here: https://github.com/your-repository-url/tree/$branch"
+        done
