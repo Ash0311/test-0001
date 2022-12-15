@@ -1,7 +1,7 @@
-name: Pre-release
+name: Pre-merge-to-main
 on:
   pull_request:
-    types: [ opened ]
+    types: [opened]
     branches:
       - main
 
@@ -16,13 +16,4 @@ jobs:
         run: |
           CURRENT_DATE=$(date +'%d%b%Y_%H%M')
           git checkout -b pre-release/$CURRENT_DATE
-
-  merge_develop_into_master:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.1
-        with:
-          ref: main
-      - name: Merge develop into master
-        run: |
-          git merge main
+          git push -u origin pre-release/$CURRENT_DATE
