@@ -25,4 +25,4 @@ jobs:
           ref: main
       - name: Merge develop into master
         run: |
-          git merge develop
+          git merge main
