@@ -16,14 +16,14 @@ jobs:
       - run: git for-each-ref --format="%(refname)" refs/heads/ | while read branch; do
             date=$(git log -1 --format=%cd $branch)
             date_in_seconds=$(date -d "$date" +%s)
-            ten_days_ago_in_seconds=$(date -d "-10 days" +%s)
+            ten_days_ago_in_seconds=$(date -d "-1 minute" +%s)
             if [ "$date_in_seconds" -lt "$ten_days_ago_in_seconds" ]; then
               echo "$branch is older than 10 days"
             fi
           done
       # Send a notification to @Ash0311 with a link to delete each branch in question
-      - name: Send notification
-        uses: peter-evans/create-or-update-issue@v2
+      - name: Create or Update Comment
+        uses: peter-evans/create-or-update-comment@v2.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: Ash0311
