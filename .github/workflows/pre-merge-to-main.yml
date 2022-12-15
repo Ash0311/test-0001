@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v2.3.1
         with:
           ref: main
-      - name: Create pre-merge branch
+      - name: Create main-pre-merge branch
         run: |
           CURRENT_DATE=$(date +'%d%b%Y_%H%M')
-          git checkout -b pre-merge/$CURRENT_DATE
-          git push -u origin pre-merge/$CURRENT_DATE
+          git checkout -b main-pre-merge/$CURRENT_DATE
+          git push -u origin  main-pre-merge/$CURRENT_DATE
