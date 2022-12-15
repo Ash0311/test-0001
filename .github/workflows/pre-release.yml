@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.1
         with:
-          ref: master
+          ref: main
       - name: Create pre-release branch
         run: |
           CURRENT_DATE=$(date +'%d%b%Y_%H%M')
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.1
         with:
-          ref: master
+          ref: main
       - name: Merge develop into master
         run: |
           git merge develop
