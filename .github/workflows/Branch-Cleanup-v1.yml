@@ -1,38 +1,20 @@
-name: Branch Cleanup
+name: Delete old branches
 
-#on:
-#  schedule:
-#    # Run this action daily at 12:00 PM
-#    - cron: '0 12 * * *'
+# on:
+#   schedule:
+#     - cron: "*/5 * * * *" # Run every 5 minutes
+
 on: [push]
+
+
 jobs:
-  cleanup:
+  delete-branches:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository containing the branches
-      - uses: actions/checkout@v2.6.0
-      - run: git branch --all
-
-      - run: git for-each-ref --format="%(refname)" refs/heads/ | while read branch; do
-            date=$(git log -1 --format=%cd $branch)
-            date_in_seconds=$(date -d "$date" +%s)
-            ten_days_ago_in_seconds=$(date -d "-1 minute" +%s)
-            if [ "$date_in_seconds" -lt "$ten_days_ago_in_seconds" ]; then
-              echo "$branch is older than 10 days"
-            fi
-          done
-      # Send a notification to @Ash0311 with a link to delete each branch in question
-      - name: Create or Update Comment
-        uses: peter-evans/create-or-update-comment@v2.1.0
+      - name: Delete branches
+        uses: actions/delete-branches@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: Ash0311
-          repo: Test001
-          title: "Branch Cleanup"
-          body: |
-            Hi @Ash0311,
-            There are branches that are older than 10 days and need to be deleted.
-            Here is a list of branches and a link to delete each branch:
-            $BRANCH_LIST
-            Thanks!
-          labels: branch-cleanup
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          branch-pattern: 'main-pre-merge/.*'
+          older-than: 7 minutes
+          include-protected: false
