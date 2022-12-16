@@ -1,19 +1,31 @@
-name: Delete old branches
+name: List abandoned branches
 
-# on:
-#   schedule:
-#     - cron: "*/5 * * * *" # Run every 5 minutes
-
-on: [push]
+on:
+  schedule:
+    - cron: "0 * * * *"
 
 jobs:
-  delete-branches:
+  list_abandoned_branches:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete branches
-        uses: phpdocker-io/github-actions-delete-abandoned-branches@v1.1.1
+      - uses: actions/checkout@v2.6.0
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          branches: main-pre-merge/*
-          minutes-old: 7
-          dry-run: true
+          fetch-depth: 0
+      - name: List abandoned branches
+        run: |
+          # Get the current time
+          NOW=$(date +%s)
+          
+          # Iterate over all branches
+          for branch in $(git branch -r | grep -v HEAD); do
+            # Get the time that the branch was last updated
+            LAST_UPDATED=$(git log -1 --format=%at $branch)
+          
+            # Calculate the difference in minutes between now and the last update
+            DIFF_MINUTES=$(((NOW - LAST_UPDATED) / 60))
+          
+            # If the difference is greater than 7 minutes, print the branch name
+            if [ $DIFF_MINUTES -gt 7 ]; then
+              echo $branch
+            fi
+          done
