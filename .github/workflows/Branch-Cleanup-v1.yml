@@ -6,13 +6,12 @@ name: Delete old branches
 
 on: [push]
 
-
 jobs:
   delete-branches:
     runs-on: ubuntu-latest
     steps:
       - name: Delete branches
-        uses: actions/delete-branches@v3
+        uses: actions/delete-branches@v3.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           branch-pattern: 'main-pre-merge/.*'
