@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete branches
-        uses: dawidd6/action-delete-branch@v3.1.0
+        uses: phpdocker-io/github-actions-delete-abandoned-branches@v1.1.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          branch-pattern: 'main-pre-merge/.*'
-          older-than: 7 minutes
-          include-protected: false
+          branches: main-pre-merge/*
+          minutes-old: 7
+          dry-run: true
