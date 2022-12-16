@@ -1,17 +1,44 @@
-name: Delete abandoned branches
+name: List old branches
 
 on:
-#  schedule:
-#    - cron: "*/5 * * * *"
   [push]
+#  schedule:
+#    # Run this workflow every day at 12:00 AM (midnight)
+#    - cron: '0 0 * * *'
 
 jobs:
-  delete_abandoned_branches_1:
+  list_old_branches:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete abandoned branches
-        uses: phpdocker-io/github-actions-delete-abandoned-branches@v1.1.1
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: List old branches
+        run: |
+          # Get a list of all branches in the repository
+          branches=$(git branch -a)
+
+          # Iterate over each branch and check if it is older than 7 minutes
+          for branch in $branches; do
+            # Get the timestamp of the latest commit on the branch
+            timestamp=$(git show -s --format=%ct "$branch")
+
+            # Calculate the difference in minutes between the current time and the commit timestamp
+            age_in_minutes=$((($(date +%s) - $timestamp) / 60))
+
+            # If the age is greater than 7 minutes, add the branch to the list
+            if [ $age_in_minutes -gt 7 ]; then
+              old_branches="$old_branches $branch"
+            fi
+          done
+
+          # If the list of old branches is not empty, send a message to the specified user
+          if [ -n "$old_branches" ]; then
+            echo "The following branches are older than 7 minutes: $old_branches" | github-messenger --to @Ash0311
+          fi
+      - name: Send message
+        uses: peter-evans/github-messenger@v1
         with:
-          days-old: 7
-          branches: 'main-pre-merge/*'
-          exclude-branches: 'main'
+          # Replace YOUR_GITHUB_TOKEN with a personal access token
+          # that has the "repo" scope granted
+          github-token: ${{ secrets.YOUR_GITHUB_TOKEN }}
