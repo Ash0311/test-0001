@@ -2,7 +2,7 @@ name: Delete abandoned branches
 
 on:
   schedule:
-    - cron: "5 * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   delete_abandoned_branches:
