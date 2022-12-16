@@ -1,4 +1,4 @@
-name: List abandoned branches
+name: Branch Cleanup
 
 on:
   schedule:
