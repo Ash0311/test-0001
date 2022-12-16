@@ -5,7 +5,7 @@ on:
     - cron: "*/5 * * * *"
 
 jobs:
-  delete_abandoned_branches:
+  delete_abandoned_branches_1:
     runs-on: ubuntu-latest
     steps:
       - name: Delete abandoned branches
