@@ -42,3 +42,5 @@ jobs:
           # Replace YOUR_GITHUB_TOKEN with a personal access token
           # that has the "repo" scope granted
           github-token: ${{ secrets.YOUR_GITHUB_TOKEN }}
+          to: @Ash0311
+
