@@ -1,0 +1,25 @@
+name: Delete old branches
+
+on: [push]
+#    schedule:
+#        # Run this workflow every day at 12:00 AM (midnight)
+#        - cron: '0 0 * * *'
+#  schedule:
+#    - cron: "0 0 * * *"
+
+jobs:
+  delete-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Delete old branches
+        run: |
+          #!/bin/bash
+          
+          for branch in $(git branch --format='%(refname:short)' | awk '/^main-pre-merge\// {print $1}'); do
+            commit_date=$(git show -s --format=%ci $branch)
+            branch_age_days=$(( ($(date -d "$commit_date" +%s) - $(date +%s)) / 86400 ))
+            if [ $branch_age_days -gt 7 ]; then
+              git branch -d $branch -n
+            fi
+          done
