@@ -19,7 +19,7 @@ jobs:
           for branch in $(git branch --format='%(refname:short)' | awk '/^main-pre-merge\// {print $1}'); do
             commit_date=$(git show -s --format=%ci $branch)
             branch_age_days=$(( ($(date -d "$commit_date" +%s) - $(date +%s)) / 86400 ))
-            if [ $branch_age_days -gt 7 ]; then
+            if [ $branch_age_days -gt 3 ]; then
               git branch -d $branch -n
             fi
           done
