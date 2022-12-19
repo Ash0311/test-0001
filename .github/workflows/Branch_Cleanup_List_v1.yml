@@ -1,0 +1,20 @@
+name: Send message
+
+on: [push]
+
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git branch -a | grep 'main-pre-merge' | xargs -I {} sh -c "find .git/refs/heads/{} -mtime +3 -print"
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const octokit = require('@octokit/rest')();
+            octokit.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Here is a list of branches:\n\n$(git branch -a | grep 'main-pre-merge' | xargs -I {} sh -c "find .git/refs/heads/{} -mtime +3 -print")`
+            });
